@@ -1,7 +1,7 @@
 const excluded = new Set();
 let searchMode = 'lower';
 let difficulty = 'hard';
-let currentLang = 'ru';
+let currentLang = 'en';
 let lastResult = null;
 
 function t(key) {

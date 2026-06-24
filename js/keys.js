@@ -1,4 +1,4 @@
-let currentLang = 'ru';
+let currentLang = 'en';
 
 function t(key) {
     return KEYS_I18N[currentLang][key];
