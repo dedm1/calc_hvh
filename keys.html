@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f1419">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Gear and Key Calculator</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/keys.css">
+</head>
+<body class="keys-page">
+<div class="wrap">
+    <nav class="app-nav">
+        <a href="index.html" class="nav-link" data-i18n="navTokens">Токены</a>
+        <a href="keys.html" class="nav-link active" data-i18n="navKeys">Ключи</a>
+    </nav>
+
+    <div class="top-bar">
+        <header class="keys-header">
+            <h1 data-i18n="title">Калькулятор ключей</h1>
+        </header>
+        <div class="lang-bar">
+            <button class="lang-btn active" data-lang="ru" type="button">RU</button>
+            <button class="lang-btn" data-lang="en" type="button">EN</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <p class="card-title" data-i18n="gearTitle">Экипировка</p>
+        <div class="table-wrap">
+            <table class="data-table" id="gearTable">
+                <thead>
+                    <tr>
+                        <th data-i18n="colClass">Класс</th>
+                        <th data-i18n="colHeroic">Героический</th>
+                        <th data-i18n="colMythic">Мифический</th>
+                        <th data-i18n="colRed">Красные</th>
+                        <th data-i18n="colLegendary">Легендарный</th>
+                        <th data-i18n="colPurple">Эпик</th>
+                        <th data-i18n="colBlue">Редкий</th>
+                        <th data-i18n="colGreen">Хороший</th>
+                        <th data-i18n="colGray">Обычный</th>
+                        <th data-i18n="colComplete">% Готово</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-class-id="knight">
+                        <td class="class-name" data-class="knight">Рыцарь</td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td class="common computed">13122</td>
+                        <td class="percent computed">0.00%</td>
+                    </tr>
+                    <tr data-class-id="wizard">
+                        <td class="class-name" data-class="wizard">Волшебник</td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td class="common computed">13122</td>
+                        <td class="percent computed">0.00%</td>
+                    </tr>
+                    <tr data-class-id="ranger">
+                        <td class="class-name" data-class="ranger">Рейнджер</td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td class="common computed">13122</td>
+                        <td class="percent computed">0.00%</td>
+                    </tr>
+                    <tr data-class-id="noble">
+                        <td class="class-name" data-class="noble">Благородный</td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td class="common computed">13122</td>
+                        <td class="percent computed">0.00%</td>
+                    </tr>
+                    <tr data-class-id="outcast">
+                        <td class="class-name" data-class="outcast">Разбойник</td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td><input class="gear-input" type="number" value="0" min="0"></td>
+                        <td class="common computed">13122</td>
+                        <td class="percent computed">0.00%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <p class="card-title" data-i18n="keysTitle">Ключи</p>
+        <div class="table-wrap">
+            <table class="data-table" id="keyTable">
+                <thead>
+                    <tr>
+                        <th data-i18n="colKeyType">Тип ключа</th>
+                        <th data-i18n="colPersonal">Личный %</th>
+                        <th data-i18n="colHardmod">Хардмод %</th>
+                        <th data-i18n="colCumulative">Совокупный %</th>
+                        <th data-i18n="colCoefficient">Коэффициент</th>
+                        <th data-i18n="colKeysNeeded">Ключи до полного героического</th>
+                        <th data-i18n="colRuns">Примерное число запусков хардмода</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-key-id="silver">
+                        <td class="class-name" data-key-type="silver">Серебряный</td>
+                        <td><input class="key-input" type="number" data-field="personal" value="25" min="0" max="100"></td>
+                        <td><input class="key-input" type="number" data-field="hardmod" value="25" min="0" max="100"></td>
+                        <td><input class="key-input" type="number" data-field="cumulative" value="50" min="0" max="100"></td>
+                        <td class="coeff">5</td>
+                        <td class="keys-needed computed">19715</td>
+                        <td class="runs-needed computed">19715</td>
+                    </tr>
+                    <tr data-key-id="gold">
+                        <td class="class-name" data-key-type="gold">Золотой</td>
+                        <td><input class="key-input" type="number" data-field="personal" value="5" min="0" max="100"></td>
+                        <td><input class="key-input" type="number" data-field="hardmod" value="5" min="0" max="100"></td>
+                        <td><input class="key-input" type="number" data-field="cumulative" value="10" min="0" max="100"></td>
+                        <td class="coeff">5:1</td>
+                        <td class="keys-needed computed">3943</td>
+                        <td class="runs-needed computed">19715</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="js/keys-config.js"></script>
+<script src="js/keys.js"></script>
+</body>
+</html>

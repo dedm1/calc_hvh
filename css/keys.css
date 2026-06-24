@@ -1,0 +1,331 @@
+body.keys-page {
+    padding-bottom: 24px;
+}
+
+.keys-header {
+    margin-bottom: 14px;
+}
+
+.keys-header h1 {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 800;
+}
+
+/* ── Цвета редкостей ── */
+:root {
+    --tier-heroic-bg: #2e3238;
+    --tier-heroic-head: #cbd5e1;
+    --tier-heroic-border: #e2e8f0;
+    --tier-heroic-text: #f8fafc;
+
+    --tier-mythic-bg: #2f2c18;
+    --tier-mythic-head: #eab308;
+    --tier-mythic-border: #fde047;
+    --tier-mythic-text: #fef9c3;
+
+    --tier-red-bg: #3b1515;
+    --tier-red-head: #b91c1c;
+    --tier-red-border: #ef4444;
+    --tier-red-text: #fca5a5;
+
+    --tier-legendary-bg: #3a2210;
+    --tier-legendary-head: #ea580c;
+    --tier-legendary-border: #fb923c;
+    --tier-legendary-text: #ffedd5;
+
+    --tier-purple-bg: #2a1840;
+    --tier-purple-head: #7e22ce;
+    --tier-purple-border: #a855f7;
+    --tier-purple-text: #d8b4fe;
+
+    --tier-blue-bg: #142238;
+    --tier-blue-head: #1d4ed8;
+    --tier-blue-border: #3b82f6;
+    --tier-blue-text: #93c5fd;
+
+    --tier-green-bg: #142a1a;
+    --tier-green-head: #15803d;
+    --tier-green-border: #22c55e;
+    --tier-green-text: #86efac;
+
+    --tier-gray-bg: #1e2430;
+    --tier-gray-head: #4b5563;
+    --tier-gray-border: #9ca3af;
+    --tier-gray-text: #d1d5db;
+
+    --key-silver-bg: #1e2836;
+    --key-silver-head: #64748b;
+    --key-silver-border: #94a3b8;
+    --key-silver-text: #e2e8f0;
+
+    --key-gold-bg: #2a2210;
+    --key-gold-head: #b45309;
+    --key-gold-border: #fbbf24;
+    --key-gold-text: #fde68a;
+
+    --col-hardmod-bg: #2a1418;
+    --col-hardmod-border: #f87171;
+    --col-hardmod-text: #fecaca;
+
+    --col-result-bg: #142238;
+    --col-result-text: #93c5fd;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    margin: 0 -2px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 12px;
+}
+
+.data-table th,
+.data-table td {
+    border: 1px solid var(--border);
+    padding: 8px 6px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.data-table th {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.data-table .class-name {
+    font-weight: 700;
+    text-align: left;
+    color: var(--text);
+    background: var(--surface2);
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, .25);
+}
+
+.data-table input[type="number"] {
+    width: 64px;
+    min-height: 36px;
+    padding: 6px 4px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+.data-table input[type="number"]::-webkit-outer-spin-button,
+.data-table input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ── Таблица экипировки: колонки по редкости ── */
+#gearTable th:nth-child(1) { background: var(--surface2); color: var(--muted); }
+
+#gearTable th:nth-child(2),
+#gearTable td:nth-child(2) { background: var(--tier-heroic-bg); }
+#gearTable th:nth-child(2) { color: var(--tier-heroic-text); border-bottom: 3px solid var(--tier-heroic-head); }
+#gearTable td:nth-child(2) input {
+    background: #252830;
+    border: 1.5px solid var(--tier-heroic-border);
+    color: var(--tier-heroic-text);
+}
+#gearTable td:nth-child(2) input:focus { box-shadow: 0 0 0 2px var(--tier-heroic-head); }
+
+#gearTable th:nth-child(3),
+#gearTable td:nth-child(3) { background: var(--tier-mythic-bg); }
+#gearTable th:nth-child(3) { color: var(--tier-mythic-text); border-bottom: 3px solid var(--tier-mythic-head); }
+#gearTable td:nth-child(3) input {
+    background: #282610;
+    border: 1.5px solid var(--tier-mythic-border);
+    color: var(--tier-mythic-text);
+}
+#gearTable td:nth-child(3) input:focus { box-shadow: 0 0 0 2px var(--tier-mythic-head); }
+
+#gearTable th:nth-child(4),
+#gearTable td:nth-child(4) { background: var(--tier-red-bg); }
+#gearTable th:nth-child(4) { color: var(--tier-red-text); border-bottom: 3px solid var(--tier-red-head); }
+#gearTable td:nth-child(4) input {
+    background: #2a1010;
+    border: 1.5px solid var(--tier-red-border);
+    color: var(--tier-red-text);
+}
+#gearTable td:nth-child(4) input:focus { box-shadow: 0 0 0 2px var(--tier-red-head); }
+
+#gearTable th:nth-child(5),
+#gearTable td:nth-child(5) { background: var(--tier-legendary-bg); }
+#gearTable th:nth-child(5) { color: var(--tier-legendary-text); border-bottom: 3px solid var(--tier-legendary-head); }
+#gearTable td:nth-child(5) input {
+    background: #301808;
+    border: 1.5px solid var(--tier-legendary-border);
+    color: var(--tier-legendary-text);
+}
+#gearTable td:nth-child(5) input:focus { box-shadow: 0 0 0 2px var(--tier-legendary-head); }
+
+#gearTable th:nth-child(6),
+#gearTable td:nth-child(6) { background: var(--tier-purple-bg); }
+#gearTable th:nth-child(6) { color: var(--tier-purple-text); border-bottom: 3px solid var(--tier-purple-head); }
+#gearTable td:nth-child(6) input {
+    background: #1f1030;
+    border: 1.5px solid var(--tier-purple-border);
+    color: var(--tier-purple-text);
+}
+#gearTable td:nth-child(6) input:focus { box-shadow: 0 0 0 2px var(--tier-purple-head); }
+
+#gearTable th:nth-child(7),
+#gearTable td:nth-child(7) { background: var(--tier-blue-bg); }
+#gearTable th:nth-child(7) { color: var(--tier-blue-text); border-bottom: 3px solid var(--tier-blue-head); }
+#gearTable td:nth-child(7) input {
+    background: #101e30;
+    border: 1.5px solid var(--tier-blue-border);
+    color: var(--tier-blue-text);
+}
+#gearTable td:nth-child(7) input:focus { box-shadow: 0 0 0 2px var(--tier-blue-head); }
+
+#gearTable th:nth-child(8),
+#gearTable td:nth-child(8) { background: var(--tier-green-bg); }
+#gearTable th:nth-child(8) { color: var(--tier-green-text); border-bottom: 3px solid var(--tier-green-head); }
+#gearTable td:nth-child(8) input {
+    background: #102818;
+    border: 1.5px solid var(--tier-green-border);
+    color: var(--tier-green-text);
+}
+#gearTable td:nth-child(8) input:focus { box-shadow: 0 0 0 2px var(--tier-green-head); }
+
+#gearTable th:nth-child(9),
+#gearTable td:nth-child(9) { background: var(--tier-gray-bg); }
+#gearTable th:nth-child(9) { color: var(--tier-gray-text); border-bottom: 3px solid var(--tier-gray-head); }
+#gearTable td:nth-child(9).common {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--tier-gray-text);
+}
+
+#gearTable th:nth-child(10),
+#gearTable td:nth-child(10) { background: #142238; }
+#gearTable th:nth-child(10) { color: #93c5fd; border-bottom: 3px solid #1d4ed8; }
+#gearTable td:nth-child(10).percent {
+    font-weight: 800;
+    color: #93c5fd;
+}
+
+/* ── Таблица ключей ── */
+#keyTable {
+    min-width: 720px;
+}
+
+#keyTable th {
+    background: var(--surface2);
+    color: var(--muted);
+}
+
+#keyTable th:nth-child(2),
+#keyTable th:nth-child(3),
+#keyTable th:nth-child(4) {
+    border-bottom: 3px solid var(--tier-green-head);
+    color: var(--tier-green-text);
+}
+
+#keyTable th:nth-child(3) {
+    border-bottom-color: var(--col-hardmod-border);
+    color: var(--col-hardmod-text);
+}
+
+#keyTable tr[data-key-id="silver"] td {
+    background: var(--key-silver-bg);
+}
+
+#keyTable tr[data-key-id="silver"] .class-name {
+    color: var(--key-silver-text);
+    border-left: 4px solid var(--key-silver-border);
+    background: #1a2230;
+}
+
+#keyTable tr[data-key-id="silver"] td:nth-child(2) input,
+#keyTable tr[data-key-id="silver"] td:nth-child(4) input {
+    background: #1a2535;
+    border: 1.5px solid var(--key-silver-border);
+    color: var(--key-silver-text);
+}
+
+#keyTable tr[data-key-id="silver"] td:nth-child(3) input {
+    background: var(--col-hardmod-bg);
+    border: 1.5px solid var(--col-hardmod-border);
+    color: var(--col-hardmod-text);
+}
+
+#keyTable tr[data-key-id="silver"] .coeff {
+    color: var(--key-silver-text);
+    font-weight: 800;
+}
+
+#keyTable tr[data-key-id="silver"] .keys-needed,
+#keyTable tr[data-key-id="silver"] .runs-needed {
+    color: var(--key-silver-text);
+    font-weight: 800;
+    font-size: 14px;
+    background: #1a2535;
+}
+
+#keyTable tr[data-key-id="gold"] td {
+    background: var(--key-gold-bg);
+}
+
+#keyTable tr[data-key-id="gold"] .class-name {
+    color: var(--key-gold-text);
+    border-left: 4px solid var(--key-gold-border);
+    background: #221c0e;
+}
+
+#keyTable tr[data-key-id="gold"] td:nth-child(2) input,
+#keyTable tr[data-key-id="gold"] td:nth-child(4) input {
+    background: #2a2210;
+    border: 1.5px solid var(--key-gold-border);
+    color: var(--key-gold-text);
+}
+
+#keyTable tr[data-key-id="gold"] td:nth-child(3) input {
+    background: var(--col-hardmod-bg);
+    border: 1.5px solid var(--col-hardmod-border);
+    color: var(--col-hardmod-text);
+}
+
+#keyTable tr[data-key-id="gold"] .coeff {
+    color: var(--key-gold-text);
+    font-weight: 800;
+}
+
+#keyTable tr[data-key-id="gold"] .keys-needed,
+#keyTable tr[data-key-id="gold"] .runs-needed {
+    color: var(--key-gold-text);
+    font-weight: 800;
+    font-size: 14px;
+    background: #2a2210;
+}
+
+#keyTable th:nth-child(6),
+#keyTable th:nth-child(7) {
+    border-bottom: 3px solid #1d4ed8;
+    color: var(--col-result-text);
+}
+
+#keyTable input[type="number"]:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, .15);
+}
+
+@media (min-width: 520px) {
+    .wrap { max-width: 960px; }
+    .data-table { font-size: 13px; }
+    .data-table input[type="number"] { width: 72px; }
+}
