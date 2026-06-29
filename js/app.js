@@ -1,8 +1,10 @@
-const excluded = new Set();
+const chipStates = new Map();
 let searchMode = 'lower';
 let difficulty = 'hard';
 let currentLang = 'en';
 let lastResult = null;
+let chipClickTimer = null;
+let chipClickId = null;
 
 function t(key) {
     return I18N[currentLang][key];
@@ -10,6 +12,23 @@ function t(key) {
 
 function getItems() {
     return getActiveLevels(difficulty);
+}
+
+function getChipState(id) {
+    return chipStates.get(id) || 'normal';
+}
+
+function setChipState(id, state) {
+    if (state === 'normal') chipStates.delete(id);
+    else chipStates.set(id, state);
+}
+
+function getExcludedCount() {
+    return getItems().filter(item => getChipState(item.id) === 'excluded').length;
+}
+
+function getRequiredCount() {
+    return getItems().filter(item => getChipState(item.id) === 'required').length;
 }
 
 function setLang(lang) {
@@ -40,17 +59,41 @@ function setDifficulty(next) {
         btn.classList.toggle('active', btn.dataset.difficulty === next);
     });
     renderChips();
+    updateTargetLimits();
     if (lastResult) calculate();
+}
+
+function getMaxTarget() {
+    return getItems()
+        .filter(item => getChipState(item.id) !== 'excluded')
+        .reduce((sum, item) => sum + item.v, 0);
+}
+
+function clampTarget(val) {
+    const max = getMaxTarget();
+    const num = parseInt(val, 10);
+    if (isNaN(num) || num < 0) return 0;
+    return Math.min(num, max);
+}
+
+function updateTargetLimits() {
+    const input = document.getElementById('target');
+    const max = getMaxTarget();
+    input.max = max;
+    input.value = clampTarget(input.value);
+    onTargetChange();
 }
 
 function stepTarget(delta) {
     const input = document.getElementById('target');
-    input.value = Math.max(0, parseInt(input.value || 0, 10) + delta);
+    input.value = clampTarget(parseInt(input.value || 0, 10) + delta);
     onTargetChange();
 }
 
 function onTargetChange() {
-    const val = parseInt(document.getElementById('target').value, 10);
+    const input = document.getElementById('target');
+    input.value = clampTarget(input.value);
+    const val = parseInt(input.value, 10) || 0;
     document.querySelectorAll('.preset-btn').forEach(btn => {
         btn.classList.toggle('active', parseInt(btn.dataset.val, 10) === val);
     });
@@ -65,7 +108,7 @@ function renderPresets() {
 }
 
 function setPreset(val) {
-    document.getElementById('target').value = val;
+    document.getElementById('target').value = clampTarget(val);
     onTargetChange();
 }
 
@@ -73,9 +116,11 @@ function renderChips() {
     const container = document.getElementById('chips');
     const items = getItems();
     container.innerHTML = items.map(item => {
+        const state = getChipState(item.id);
         const classes = ['chip'];
         if (item.isSuper) classes.push('super');
-        if (excluded.has(item.id)) classes.push('excluded');
+        if (state === 'excluded') classes.push('excluded');
+        if (state === 'required') classes.push('required');
         const superLabel = item.isSuper ? `<div class="chip-type">${t('superTag')}</div>` : '';
         return `
             <div class="${classes.join(' ')}" data-id="${item.id}">
@@ -87,35 +132,78 @@ function renderChips() {
     }).join('');
 }
 
-function toggleChip(id) {
-    if (excluded.has(id)) excluded.delete(id);
-    else excluded.add(id);
-    renderChips();
+function handleChipClick(id) {
+    const state = getChipState(id);
+
+    if (state === 'required') {
+        if (chipClickTimer) {
+            clearTimeout(chipClickTimer);
+            chipClickTimer = null;
+            chipClickId = null;
+        }
+        setChipState(id, 'normal');
+        renderChips();
+        updateTargetLimits();
+        return;
+    }
+
+    if (chipClickTimer && chipClickId === id) {
+        clearTimeout(chipClickTimer);
+        chipClickTimer = null;
+        chipClickId = null;
+        setChipState(id, 'required');
+        renderChips();
+        updateTargetLimits();
+        return;
+    }
+
+    if (chipClickTimer) {
+        clearTimeout(chipClickTimer);
+    }
+
+    chipClickId = id;
+    chipClickTimer = setTimeout(() => {
+        chipClickTimer = null;
+        chipClickId = null;
+        const current = getChipState(id);
+        if (current === 'excluded') setChipState(id, 'normal');
+        else setChipState(id, 'excluded');
+        renderChips();
+        updateTargetLimits();
+    }, 280);
 }
 
 function excludeAll() {
-    getItems().forEach(i => excluded.add(i.id));
+    getItems().forEach(i => setChipState(i.id, 'excluded'));
     renderChips();
+    updateTargetLimits();
 }
 
 function includeAll() {
-    excluded.clear();
+    chipStates.clear();
     renderChips();
+    updateTargetLimits();
 }
 
-function findBestCombination(target, available, mode) {
+function findBestCombination(target, required, optional, mode) {
+    const reqSum = required.reduce((sum, item) => sum + item.v, 0);
+    const reqComb = [...required];
     let bestSum = mode === 'lower' ? -1 : Infinity;
     let bestComb = [];
 
-    const totalCombs = 1 << available.length;
-    for (let i = 0; i < totalCombs; i++) {
-        let currentSum = 0;
-        const currentComb = [];
+    if (mode === 'lower' && reqSum > target) {
+        return { bestSum: -1, bestComb: [] };
+    }
 
-        for (let j = 0; j < available.length; j++) {
+    const totalCombs = 1 << optional.length;
+    for (let i = 0; i < totalCombs; i++) {
+        let currentSum = reqSum;
+        const currentComb = [...reqComb];
+
+        for (let j = 0; j < optional.length; j++) {
             if ((i >> j) & 1) {
-                currentSum += available[j].v;
-                currentComb.push(available[j]);
+                currentSum += optional[j].v;
+                currentComb.push(optional[j]);
             }
         }
 
@@ -134,16 +222,31 @@ function findBestCombination(target, available, mode) {
         }
     }
 
+    if (required.length && bestComb.length === 0 && mode === 'higher' && reqSum >= target) {
+        return { bestSum: reqSum, bestComb: reqComb };
+    }
+
     return { bestSum, bestComb };
 }
 
 function calculate() {
     const target = parseInt(document.getElementById('target').value, 10);
-    const available = getItems().filter(item => !excluded.has(item.id));
-    const { bestSum, bestComb } = findBestCombination(target, available, searchMode);
+    const items = getItems();
+    const required = items.filter(item => getChipState(item.id) === 'required');
+    const optional = items.filter(item => getChipState(item.id) === 'normal');
+    const available = required.length + optional.length;
+    const { bestSum, bestComb } = findBestCombination(target, required, optional, searchMode);
     const superCount = bestComb.filter(item => item.isSuper).length;
 
-    lastResult = { target, bestSum, bestComb, available: available.length, superCount };
+    lastResult = {
+        target,
+        bestSum,
+        bestComb,
+        available,
+        superCount,
+        excluded: getExcludedCount(),
+        required: getRequiredCount()
+    };
     renderResult(lastResult);
 }
 
@@ -157,7 +260,7 @@ function renderResult(data) {
         return;
     }
 
-    const { target, bestSum, bestComb, available, superCount } = data;
+    const { target, bestSum, bestComb, available, superCount, excluded, required } = data;
 
     if (bestSum === -1 || bestSum === Infinity) {
         card.className = 'card result-card error';
@@ -175,9 +278,14 @@ function renderResult(data) {
         diffHtml = `<span class="warn">${t('diffAbove')} ${diff}</span>`;
     }
 
+    const requiredIds = new Set(
+        getItems().filter(item => getChipState(item.id) === 'required').map(item => item.id)
+    );
+
     const pills = bestComb.length
         ? bestComb.map(c => {
-            const cls = c.isSuper ? 'pill super' : 'pill';
+            let cls = c.isSuper ? 'pill super' : 'pill';
+            if (requiredIds.has(c.id)) cls += ' required';
             return `<span class="${cls}"><span class="pill-id">#${c.id}</span>${c.v}</span>`;
         }).join('')
         : '<span class="pill">0</span>';
@@ -191,8 +299,8 @@ function renderResult(data) {
         <div class="result-pills">${pills}</div>
         <div class="stats">
             <span><strong>${bestComb.length}</strong>${t('tokens')}</span>
-            <span class="stat-super"><strong>${superCount}</strong>${t('superTotal')}</span>
-            <span><strong>${excluded.size}</strong>${t('excluded')}</span>
+            <span><strong>${required}</strong>${t('required')}</span>
+            <span><strong>${excluded}</strong>${t('excluded')}</span>
             <span><strong>${available}</strong>${t('available')}</span>
         </div>
         ${superTotalHtml}
@@ -222,7 +330,7 @@ function bindEvents() {
 
     document.getElementById('chips').addEventListener('click', e => {
         const chip = e.target.closest('.chip');
-        if (chip) toggleChip(parseInt(chip.dataset.id, 10));
+        if (chip) handleChipClick(parseInt(chip.dataset.id, 10));
     });
 
     document.getElementById('target').addEventListener('input', onTargetChange);
@@ -237,6 +345,7 @@ function bindEvents() {
 function init() {
     bindEvents();
     setLang(currentLang);
+    updateTargetLimits();
 }
 
 init();
